@@ -88,13 +88,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState != null) {
             fresh = false;
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
         mGeofenceList = new ArrayList<>();
-
 
         setContentView(R.layout.activity_map);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
