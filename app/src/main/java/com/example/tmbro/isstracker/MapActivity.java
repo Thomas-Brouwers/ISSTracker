@@ -96,12 +96,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mGeofenceList = new ArrayList<>();
 
 
-        //setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_map);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
+        mapFragment.getMapAsync(this);
 
         mGeofencingClient = LocationServices.getGeofencingClient(this);
 
