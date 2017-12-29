@@ -15,40 +15,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by tmbro on 11-12-2017.
- */
 
 public class JsonParser {
-    /*public List<POI> getAllPOIs(JSONArray array){
-        //JSONArray array = getJsonArray("pois_historic_route");
-        ArrayList<POI> POIList = new ArrayList<>();
-        for (int i = 0; i < array.length();i++){
-            try {
-                POIList.add(parsePOI(array.getJSONObject(i)));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return POIList;
-    }
+    private double lon;
+    private double lat;
 
-    private POI parsePOI(JSONObject json){
-        POI poi = null;
+    public JsonParser(JSONObject json){
         try {
-            poi = new POI(
-                    json.getInt("Nummer"),                  //nummer
-                    json.getString("Naam"),                 //name
-                    getDescription(json.getString("Tekst")),//description
-                    json.getString("Foto"),                 //imagename
-                    Location.convert(json.getString("OL")), //longitude
-                    Location.convert(json.getString("NB")), //latitude
-                    getCategory(json.getString("Naam"))     //Category
-            );
+            lon = json.getDouble("longitude");
+            lat = json.getDouble("latitude");
+
         } catch (JSONException e) {
             e.printStackTrace();
-            return null;
         }
-        return poi;
-    }*/
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
 }
