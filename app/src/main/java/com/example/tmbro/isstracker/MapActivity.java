@@ -37,6 +37,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         UpdateThread th = new UpdateThread();
         th.execute();
+        th.onProgressUpdate();
 
         try {
             off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
@@ -101,3 +102,4 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 }
+
