@@ -31,7 +31,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private static final int  MY_PERMISSIONS_REQUEST_LOCATION = 1;
     int off = 0;
     public GoogleMap mMap;
-    UpdateThread th = new UpdateThread();
+    UpdateThread th;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         setContentView(R.layout.activity_map);
 
         Log.d("CREATION", "Thread might run");
-
+         th = new UpdateThread(this.getApplicationContext());
         th.execute();
 
         try {
@@ -86,7 +86,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            th.onProgressUpdate();
+                            double lat = th.lat();
+                            double lon = th.lon();
+                            Log.d("IKHAAT", "Lat: "+lat+" Lon: "+lon);
                         }
                     });
                 }
@@ -106,8 +108,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     mMap.setMyLocationEnabled(true);
-
-
 
                 } else {
 
