@@ -1,10 +1,21 @@
 package com.example.tmbro.isstracker;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,49 +23,37 @@ import java.util.List;
  */
 
 public class MapController {
-    private static MapController instance = new MapController();
-    public final static String KEY_PREFERENCES = "myPreferences";
-    public final static String KEY_SAVENAME = "poidata";
-    public final static String LOG_SHAREDPREF = "SharedPreferences";
-    private boolean init = false;
 
-    public void init(InputStream poiInputStream) {
-        if (!init) {
-            //pois = new JsonParser().getAllPOIs(getJsonArray(poiInputStream));
-            init = true;
-        }
+    private double satLong;
+    private double satLat;
+
+    public MapController(String url, Context context) {
+
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            satLong = new JsonParser(response).getLon();
+                            satLat = new JsonParser(response).getLat();
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                        }
+                    }
+                    );
+
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    public boolean isInit() {
-        return init;
+    public double getSatLong() {
+        return satLong;
     }
 
-    private MapController() {
-
-    }
-
-    public static MapController getInstance() {
-        return instance;
-    }
-
-    private JSONArray getJsonArray(InputStream ins) {
-        JSONArray jsonArray = null;
-        try {
-            int size = 0;
-            size = ins.available();
-            byte[] buffer = new byte[size];
-            ins.read(buffer);
-            ins.close();
-            String textJson = new String(buffer, "UTF-8");
-            jsonArray = new JSONArray(textJson);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return jsonArray;
+    public double getSatLat() {
+        return satLat;
     }
 }
-
