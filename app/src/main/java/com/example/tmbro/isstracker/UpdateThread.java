@@ -20,7 +20,6 @@ int counter = 0;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                publishProgress();
             }
 
     }

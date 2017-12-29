@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -23,10 +24,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final int  MY_PERMISSIONS_REQUEST_LOCATION = 1;
     int off = 0;
-    private GoogleMap mMap;
+    public GoogleMap mMap;
+    UpdateThread th = new UpdateThread();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +40,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         Log.d("CREATION", "Thread might run");
 
-        UpdateThread th = new UpdateThread();
         th.execute();
-        th.onProgressUpdate();
 
         try {
             off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
@@ -74,6 +77,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
 
+        Timer t = new Timer();
+
+            TimerTask task = new TimerTask(){
+
+                @Override
+                public void run(){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            th.onProgressUpdate();
+                        }
+                    });
+                }
+            };
+
+        t.scheduleAtFixedRate(task, 0, 1000);
 
     }
 
@@ -102,4 +121,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 }
+
 
