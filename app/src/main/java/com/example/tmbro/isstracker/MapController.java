@@ -1,22 +1,12 @@
 package com.example.tmbro.isstracker;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by tmbro on 28-12-2017.

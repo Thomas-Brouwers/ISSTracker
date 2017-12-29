@@ -31,7 +31,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private static final int  MY_PERMISSIONS_REQUEST_LOCATION = 1;
     int off = 0;
     public GoogleMap mMap;
-    UpdateThread th = new UpdateThread();
+    UpdateThread th;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         setContentView(R.layout.activity_map);
 
         Log.d("CREATION", "Thread might run");
-
+         th = new UpdateThread(this.getApplicationContext());
         th.execute();
 
         try {
@@ -63,10 +63,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Polyline line = mMap.addPolyline(new PolylineOptions()
+        /*Polyline line = mMap.addPolyline(new PolylineOptions()
                 .add(new LatLng(51.5, -0.1), new LatLng(40.7, -74.0))
                 .width(5)
-                .color(Color.RED));
+                .color(Color.RED));*/
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -86,13 +86,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            th.onProgressUpdate();
+                            double lat = th.lat();
+                            double lon = th.lon();
+                            Log.d("COÖRDS", "Lat: "+lat+" Lon: "+lon);
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title("Hier is een spacestation."));
                         }
                     });
                 }
             };
 
-        t.scheduleAtFixedRate(task, 0, 1000);
+        t.scheduleAtFixedRate(task, 0, 1200);
 
     }
 
@@ -106,8 +109,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     mMap.setMyLocationEnabled(true);
-
-
 
                 } else {
 
