@@ -63,10 +63,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Polyline line = mMap.addPolyline(new PolylineOptions()
+        /*Polyline line = mMap.addPolyline(new PolylineOptions()
                 .add(new LatLng(51.5, -0.1), new LatLng(40.7, -74.0))
                 .width(5)
-                .color(Color.RED));
+                .color(Color.RED));*/
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -88,13 +88,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         public void run() {
                             double lat = th.lat();
                             double lon = th.lon();
-                            Log.d("IKHAAT", "Lat: "+lat+" Lon: "+lon);
+                            Log.d("COÖRDS", "Lat: "+lat+" Lon: "+lon);
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title("Hier is een spacestation."));
                         }
                     });
                 }
             };
 
-        t.scheduleAtFixedRate(task, 0, 1000);
+        t.scheduleAtFixedRate(task, 0, 1200);
 
     }
 

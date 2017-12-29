@@ -8,7 +8,6 @@ import android.os.AsyncTask;
  */
 
 public class UpdateThread extends AsyncTask<Context, Integer, double[]> {
-int counter = 0;
 double lat;
 double lon;
 Context currentContext;
@@ -27,18 +26,11 @@ Context currentContext;
                 lon = mCon.getSatLong();
                 mCon = new MapController("https://api.wheretheiss.at/v1/satellites/25544", currentContext);
                  try {
-
-                    Thread.sleep(1000);
-
+                    Thread.sleep(1200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... counter) {
     }
 
     public double lat() {

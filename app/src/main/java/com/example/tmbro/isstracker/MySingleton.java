@@ -23,7 +23,6 @@ public class MySingleton {
     private MySingleton(Context context) {
         mCtx = context;
         mRequestQueue = getRequestQueue();
-
     }
 
     public static synchronized MySingleton getInstance(Context context) {
