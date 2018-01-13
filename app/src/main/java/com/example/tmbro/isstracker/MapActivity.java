@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -86,10 +87,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            double lat = th.lat();
-                            double lon = th.lon();
+                            List<Double> lat = th.lat();
+                            List<Double> lon = th.lon();
                             Log.d("COÖRDS", "Lat: "+lat+" Lon: "+lon);
-                            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title("Hier is een spacestation."));
+                            mMap.clear();
+                            for(int i = 0; i< lat.size();i++) {
+
+                                mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(i), lon.get(i))).title("Hier is een spacestation."));
+
+                            }
+
                         }
                     });
                 }
