@@ -39,6 +39,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+
+
         Log.d("CREATION", "Thread might run");
          th = new UpdateThread(this.getApplicationContext());
         th.execute();
@@ -64,6 +66,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        Intent intent = getIntent();
+        double lati = intent.getDoubleExtra("USER_LAT", 50);
+        double loni = intent.getDoubleExtra("USER_LON", 8);
         /*Polyline line = mMap.addPolyline(new PolylineOptions()
                 .add(new LatLng(51.5, -0.1), new LatLng(40.7, -74.0))
                 .width(5)
@@ -91,6 +96,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             List<Double> lon = th.lon();
                             Log.d("COÖRDS", "Lat: "+lat+" Lon: "+lon);
                             mMap.clear();
+
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title("Beeeeeeeeep"));
                             for(int i = 0; i< lat.size();i++) {
 
                                 mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(i), lon.get(i))).title("Hier is een spacestation."));

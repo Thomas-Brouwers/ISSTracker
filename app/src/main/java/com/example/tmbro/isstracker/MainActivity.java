@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String USER_HOME = "USER_HOME";
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
     Geocoder geocoder;
     List<Address> addresses;
@@ -34,15 +36,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView textView = findViewById(R.id.headTxt);
-        final Button button = findViewById(R.id.button2);
+        SharedPreferences.Editor editor = getSharedPreferences(USER_HOME, MODE_PRIVATE).edit();
+        SharedPreferences reader = getSharedPreferences(USER_HOME, MODE_PRIVATE);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MapActivity.class);
-                startActivity(intent);
-            }
-        });
+        final TextView textView = findViewById(R.id.updateTxt);
+
+        float readlat = reader.getFloat("lat", 1);
+        float readlon = reader.getFloat("lon", 1);
+
+        latitude = readlat;
+        longitude = readlon;
+        textView.setText("Je thuislocatie is nu: " + reader.getString("place", "Please update below"));
 
         final Button saveButton = findViewById(R.id.saveButton);
 
@@ -58,19 +62,18 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        double longitude = location.getLongitude();
-                        double latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
 
                         geocoder = new Geocoder(context, Locale.getDefault());
                         addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
-                        String address = addresses.get(0).getAddressLine(0);
-                        String area = addresses.get(0).getLocality();
-                        String city = addresses.get(0).getAdminArea();
-                        String country = addresses.get(0).getCountryName();
-                        String postalcode = addresses.get(0).getPostalCode();
+                        editor.putFloat("lat", (float)latitude);
+                        editor.putFloat("lon", (float)longitude);
+                        editor.putString("place", addresses.get(0).getLocality());
+                        editor.apply();
 
-                        textView.setText(address + area + city + country + postalcode);
+                        textView.setText("Je thuislocatie is nu: " + addresses.get(0).getLocality());
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -80,6 +83,18 @@ public class MainActivity extends AppCompatActivity {
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_PERMISSIONS_REQUEST_LOCATION);
                 }
+            }
+        });
+
+        final Button button = findViewById(R.id.mapButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), MapActivity.class);
+
+                intent.putExtra("USER_LON", longitude);
+                intent.putExtra("USER_LAT", latitude);
+                startActivity(intent);
             }
         });
     }
