@@ -25,7 +25,6 @@ Timestamp timestamp;
     protected double[] doInBackground(Context... integers) {
 
         MapController mCon = new MapController("https://api.wheretheiss.at/v1/satellites/25544", currentContext);
-        timestamp = new Timestamp(0);
 
             while (true) {
                 Long tsLong = System.currentTimeMillis()/1000;

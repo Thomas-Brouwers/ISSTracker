@@ -13,27 +13,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
-import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by delaroy on 4/18/17.
- */
 public class GeofenceTransitionService extends IntentService {
 
-    private static final String TAG = GeofenceTransitionService.class.getSimpleName();
-
     public static final int GEOFENCE_NOTIFICATION_ID = 0;
+    private static final String TAG = GeofenceTransitionService.class.getSimpleName();
 
     public GeofenceTransitionService() {
         super(TAG);
+    }
+
+    private static String getErrorString(int errorCode) {
+        switch (errorCode) {
+            case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE:
+                return "GeoFence not available";
+            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_GEOFENCES:
+                return "Too many GeoFences";
+            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_PENDING_INTENTS:
+                return "Too many pending intents";
+            default:
+                return "Unknown error.";
+        }
     }
 
     @Override
@@ -52,40 +60,38 @@ public class GeofenceTransitionService extends IntentService {
                 geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
             // Get the geofence that were triggered
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
-
-            /*int poi = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
-
+            Toast toast = Toast.makeText(getApplicationContext(),"trigger",Toast.LENGTH_SHORT);
+            toast.show();
             // Send notification details as a String
-            sendNotification(poi);*/
+            sendNotification();
         }
     }
 
-    private void sendNotification(int poiNr) {
-        Log.i(TAG, "sendNotification: " + poiNr);
+    private void sendNotification() {
+        Log.i(TAG, "sendNotification");
 
         // Intent to start the main Activity
         Intent notificationIntent = new Intent(getApplicationContext(), GeofenceTransitionService.class);
-        //notificationIntent.putExtra(InformationActivity.KEY_POI, poiNr);
-
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MapActivity.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent notificationPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
+
         // Creating and sending Notification
-       /* NotificationManager notificatioMng =
+        NotificationManager notificatioMng =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificatioMng.notify(
                 GEOFENCE_NOTIFICATION_ID,
-                createNotification(getString(R.string.notification), poi.getName(), notificationPendingIntent));*/
+                createNotification("ISS is in de buurt", "ISS", notificationPendingIntent));
 
     }
 
     // Create notification
     private Notification createNotification(String msg, String name, PendingIntent notificationPendingIntent) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "POI");
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "ISS");
         notificationBuilder
-                // .setSmallIcon(R.drawable.ic_location)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setColor(Color.RED)
                 .setContentTitle(msg)
                 .setContentText(name)
@@ -93,19 +99,5 @@ public class GeofenceTransitionService extends IntentService {
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
                 .setAutoCancel(true);
         return notificationBuilder.build();
-    }
-
-
-    private static String getErrorString(int errorCode) {
-        switch (errorCode) {
-            case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE:
-                return "GeoFence not available";
-            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_GEOFENCES:
-                return "Too many GeoFences";
-            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_PENDING_INTENTS:
-                return "Too many pending intents";
-            default:
-                return "Unknown error.";
-        }
     }
 }
