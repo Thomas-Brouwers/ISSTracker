@@ -4,8 +4,15 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -14,18 +21,27 @@ import org.json.JSONObject;
 
 public class MapController {
 
-    private double satLong;
-    private double satLat;
+    private List<Double> satLong;
+    private List<Double> satLat;
 
     public MapController(String url, Context context) {
+        satLong = new ArrayList<>();
+        satLat = new ArrayList<>();
 
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            JsonArrayRequest jsObjRequest = new JsonArrayRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
                         @Override
-                        public void onResponse(JSONObject response) {
-                            satLong = new JsonParser(response).getLon();
-                            satLat = new JsonParser(response).getLat();
+                        public void onResponse(JSONArray response) {
+                            for(int i = 0 ; i < response.length();i++)
+                                try {
+                                    satLong.add(new JsonParser(response.getJSONObject(i)).getLon());
+                                    satLat.add(new JsonParser(response.getJSONObject(i)).getLat());
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                         }
                     }, new Response.ErrorListener() {
 
@@ -39,11 +55,11 @@ public class MapController {
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    public double getSatLong() {
+    public List<Double> getSatLong() {
         return satLong;
     }
 
-    public double getSatLat() {
+    public List<Double> getSatLat() {
         return satLat;
     }
 }
