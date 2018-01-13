@@ -61,10 +61,14 @@ public class MainActivity extends AppCompatActivity {
                         == PackageManager.PERMISSION_GRANTED) {
 
                     try {
-                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        longitude = location.getLongitude();
-                        latitude = location.getLatitude();
-
+                        Location location = null;
+                        if (lm != null) {
+                            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        }
+                        if(location != null) {
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                        }
                         geocoder = new Geocoder(context, Locale.getDefault());
                         addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
