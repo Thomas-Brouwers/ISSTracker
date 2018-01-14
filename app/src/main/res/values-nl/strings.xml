@@ -7,4 +7,6 @@
     <string name="go_button">Ga!</string>
     <string name="press_here">Klik hier om naar de kaart te gaan.</string>
     <string name="close_toast">Je kan het ISS in de lucht zien.</string>
+    <string name="home_marker">Thuis</string>
+    <string name="ISS_marker">International Space Station</string>
 </resources>

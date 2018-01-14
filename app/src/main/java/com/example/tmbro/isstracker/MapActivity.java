@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -35,18 +36,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     int off = 0;
     public GoogleMap mMap;
     UpdateThread th;
-    Timer t;
-    TimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-
-
         Log.d("CREATION", "Thread might run");
-         th = new UpdateThread(this.getApplicationContext());
+        th = new UpdateThread(this.getApplicationContext());
         th.execute();
 
         try {
@@ -87,9 +84,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
 
-        t = new Timer();
+        Timer t = new Timer();
 
-            task = new TimerTask(){
+        TimerTask task = new TimerTask(){
 
                 @Override
                 public void run(){
@@ -101,7 +98,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             Log.d("COÖRDS", "Lat: "+lat+" Lon: "+lon);
                             mMap.clear();
 
-                            mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title("Thuis"));
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title(getString(R.string.home_marker))).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.house_icon));
 
                             if(!lat.isEmpty() && !lon.isEmpty()) {
 
@@ -110,7 +107,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 LatLng three = new LatLng(lat.get(2), lon.get(2));
                                 LatLng four = new LatLng(lat.get(3), lon.get(3));
                                 LatLng five = new LatLng(lat.get(4), lon.get(4));
-                                mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(4), lon.get(4))).title("Hier is het ISS."));
+                                mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(4), lon.get(4))).title(getString(R.string.ISS_marker))).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.space_station));
                                 LatLng six = new LatLng(lat.get(5), lon.get(5));
                                 LatLng seven = new LatLng(lat.get(6), lon.get(6));
                                 LatLng eight = new LatLng(lat.get(7), lon.get(7));
@@ -169,11 +166,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onDestroy(){
         Log.d("DESTROY","activity destroyed");
-        task.cancel();
-        t.cancel();
-        t.purge();
-        task = null;
-        t = null;
+        System.exit(0);
         super.onDestroy();
     }
 }

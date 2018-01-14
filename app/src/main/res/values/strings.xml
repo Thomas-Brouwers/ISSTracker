@@ -6,4 +6,6 @@
     <string name="go_button">Go!</string>
     <string name="press_here">Press here to go to the map.</string>
     <string name="close_toast">The ISS is visible in the sky.</string>
+    <string name="home_marker">Home</string>
+    <string name="ISS_marker">International Space Station</string>
 </resources>
