@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ISSTracker</string>
+    <string name="home_location">"Je thuis locatie is: "</string>
+    <string name="please_update">Update hieronder.</string>
+    <string name="toast">Je kan je locatie niet zien zonder de gevraagde toagang.</string>
+    <string name="go_button">Ga!</string>
+    <string name="press_here">Klik hier om naar de kaart te gaan.</string>
+    <string name="close_toast">Je kan het ISS in de lucht zien.</string>
+</resources>

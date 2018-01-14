@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -98,7 +100,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             mMap.clear();
 
                             mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title("Thuis"));
+
                             if(!lat.isEmpty() && !lon.isEmpty()) {
+
                                 LatLng one = new LatLng(lat.get(0), lon.get(0));
                                 LatLng two = new LatLng(lat.get(1), lon.get(1));
                                 LatLng three = new LatLng(lat.get(2), lon.get(2));
@@ -114,8 +118,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                         .color(Color.BLUE));
                                 //mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(i), lon.get(i))).title("Hier is een spacestation."));
 
+                                Location satellite = new Location("");
+                                satellite.setLatitude(lat.get(4));
+                                satellite.setLongitude(lon.get(4));
 
+                                Location home = new Location("");
+                                home.setLatitude(lati);
+                                home.setLongitude(loni);
+
+                                if(home.distanceTo(satellite)<500000){
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toasti = Toast.makeText(getApplicationContext(), getString(R.string.close_toast), duration);
+                                    toasti.show();
+                                }
                             }
+
                         }
                     });
                 }
@@ -140,7 +157,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                     int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(getApplicationContext(), "You won't be able to see your location without the asked permission.", duration);
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.toast), duration);
                     toast.show();
                 }
                 return;
