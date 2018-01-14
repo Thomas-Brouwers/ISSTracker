@@ -23,7 +23,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCw29dHx1qpIClZXQ8UA2feMWWdC9Ucnak" />
         <activity
-            android:name=".MapActivity" />
+            android:name=".MapActivity" android:noHistory="true"/>
     </application>
 
 </manifest>

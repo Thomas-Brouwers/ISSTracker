@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("USER_LON", longitude);
                 intent.putExtra("USER_LAT", latitude);
                 startActivity(intent);
+                finish();
             }
         });
     }
