@@ -5,4 +5,5 @@
     <string name="toast">Pls gib perms</string>
     <string name="go_button">Go!</string>
     <string name="press_here">Press here to go to the map.</string>
+    <string name="close_toast">The ISS is visible in the sky.</string>
 </resources>

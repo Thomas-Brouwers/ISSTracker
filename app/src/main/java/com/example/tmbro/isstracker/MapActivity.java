@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -113,7 +115,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                         .add(one, two, three, four, five, six, seven, eight, nine)
                                         .color(Color.BLUE));
                                 //mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(i), lon.get(i))).title("Hier is een spacestation."));
+
+                                Location satellite = new Location("");
+                                satellite.setLatitude(lat.get(4));
+                                satellite.setLongitude(lon.get(4));
+
+                                Location home = new Location("");
+                                home.setLatitude(lati);
+                                home.setLongitude(loni);
+
+                                if(home.distanceTo(satellite)<500000){
+                                    int duration = Toast.LENGTH_LONG;
+                                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.close_toast), duration);
+                                    toast.show();
+                                }
                             }
+
+
                         }
                     });
                 }

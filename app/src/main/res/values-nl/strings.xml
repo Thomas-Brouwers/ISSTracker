@@ -6,4 +6,5 @@
     <string name="toast">Je kan je locatie niet zien zonder de gevraagde toagang.</string>
     <string name="go_button">Ga!</string>
     <string name="press_here">Klik hier om naar de kaart te gaan.</string>
+    <string name="close_toast">Je kan het ISS in de lucht zien.</string>
 </resources>
