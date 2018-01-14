@@ -97,10 +97,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             Log.d("COÖRDS", "Lat: "+lat+" Lon: "+lon);
                             mMap.clear();
 
-                            mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title("Beeeeeeeeep"));
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title("Thuis"));
                             for(int i = 0; i< lat.size();i++) {
-
-                                mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(i), lon.get(i))).title("Hier is een spacestation."));
+                                LatLng one = new LatLng(lat.get(0), lon.get(0));
+                                LatLng two = new LatLng(lat.get(1), lon.get(1));
+                                LatLng three = new LatLng(lat.get(2), lon.get(2));
+                                LatLng four = new LatLng(lat.get(3), lon.get(3));
+                                LatLng five = new LatLng(lat.get(4), lon.get(4));
+                                mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(4), lon.get(4))).title("Hier is het ISS."));
+                                LatLng six = new LatLng(lat.get(5), lon.get(5));
+                                LatLng seven = new LatLng(lat.get(6), lon.get(6));
+                                LatLng eight = new LatLng(lat.get(7), lon.get(7));
+                                LatLng nine = new LatLng(lat.get(8), lon.get(8));
+                                mMap.addPolyline(new PolylineOptions()
+                                .add(one, two, three, four, five, six, seven, eight, nine)
+                                .color(Color.BLUE));
+                                //mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(i), lon.get(i))).title("Hier is een spacestation."));
 
                             }
 
