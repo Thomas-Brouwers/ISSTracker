@@ -1,4 +1,4 @@
-package com.example.tmbro.isstracker;
+package com.example.tmbro.isstracker.View;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -16,7 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.tmbro.isstracker.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.example.tmbro.isstracker.Model.UpdateThread;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -25,10 +24,8 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -130,11 +127,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 home.setLongitude(loni);
 
                                 Circle circle = mMap.addCircle(new CircleOptions()
-                                        .center(homeco)
-                                        .radius(500000)
+                                        .center(five)
+                                        .radius(1500000)
                                         .strokeColor(Color.GREEN));
 
-                                if(home.distanceTo(satellite)<500000){
+                                if(home.distanceTo(satellite)<1500000){
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toasti = Toast.makeText(getApplicationContext(), getString(R.string.close_toast), duration);
                                     toasti.show();

@@ -1,9 +1,10 @@
-package com.example.tmbro.isstracker;
+package com.example.tmbro.isstracker.Model;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import java.sql.Time;
+import com.example.tmbro.isstracker.Controller.MapController;
+
 import java.sql.Timestamp;
 import java.util.List;
 

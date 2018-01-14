@@ -1,16 +1,13 @@
-package com.example.tmbro.isstracker;
+package com.example.tmbro.isstracker.Controller;
 
 /**
  * Created by tmbro on 29-12-2017.
  */
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 

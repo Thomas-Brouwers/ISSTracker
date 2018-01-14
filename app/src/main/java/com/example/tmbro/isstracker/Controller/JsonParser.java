@@ -1,4 +1,4 @@
-package com.example.tmbro.isstracker;
+package com.example.tmbro.isstracker.Controller;
 
 /**
  * Created by tmbro on 28-12-2017.

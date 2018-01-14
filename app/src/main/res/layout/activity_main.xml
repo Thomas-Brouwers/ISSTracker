@@ -5,7 +5,7 @@
     android:id="@+id/toMapBtn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tmbro.isstracker.MainActivity">
+    tools:context="com.example.tmbro.isstracker.View.MainActivity">
 
     <Button
         android:id="@+id/mapButton"
