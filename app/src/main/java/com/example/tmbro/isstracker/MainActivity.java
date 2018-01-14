@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         latitude = readlat;
         longitude = readlon;
-        textView.setText("Je thuislocatie is nu: " + reader.getString("place", "Please update below"));
+        textView.setText(getString(R.string.home_location) + reader.getString("place", getString(R.string.please_update)));
 
         final Button saveButton = findViewById(R.id.saveButton);
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("place", addresses.get(0).getLocality());
                         editor.apply();
 
-                        textView.setText("Je thuislocatie is nu: " + addresses.get(0).getLocality());
+                        textView.setText(getString(R.string.home_location) + addresses.get(0).getLocality());
 
                     } catch (IOException e) {
                         e.printStackTrace();

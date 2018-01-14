@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ISSTracker</string>
+    <string name="home_location">"Your home location is: "</string>
+    <string name="please_update">Please update below</string>
+    <string name="toast">Pls gib perms</string>
+    <string name="go_button">Go!</string>
+    <string name="press_here">Press here to go to the map.</string>
 </resources>

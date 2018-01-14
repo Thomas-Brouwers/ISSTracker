@@ -98,7 +98,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             mMap.clear();
 
                             mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title("Thuis"));
-                            for(int i = 0; i< lat.size();i++) {
+                            if(lat.size()==9) {
                                 LatLng one = new LatLng(lat.get(0), lon.get(0));
                                 LatLng two = new LatLng(lat.get(1), lon.get(1));
                                 LatLng three = new LatLng(lat.get(2), lon.get(2));
@@ -110,12 +110,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 LatLng eight = new LatLng(lat.get(7), lon.get(7));
                                 LatLng nine = new LatLng(lat.get(8), lon.get(8));
                                 mMap.addPolyline(new PolylineOptions()
-                                .add(one, two, three, four, five, six, seven, eight, nine)
-                                .color(Color.BLUE));
+                                        .add(one, two, three, four, five, six, seven, eight, nine)
+                                        .color(Color.BLUE));
                                 //mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(i), lon.get(i))).title("Hier is een spacestation."));
-
                             }
-
                         }
                     });
                 }
@@ -140,7 +138,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                     int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(getApplicationContext(), "You won't be able to see your location without the asked permission.", duration);
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.toast), duration);
                     toast.show();
                 }
                 return;
