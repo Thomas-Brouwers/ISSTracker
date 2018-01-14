@@ -21,6 +21,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -98,7 +100,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             Log.d("COÖRDS", "Lat: "+lat+" Lon: "+lon);
                             mMap.clear();
 
-                            mMap.addMarker(new MarkerOptions().position(new LatLng(lati, loni)).title(getString(R.string.home_marker))).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.house_icon));
+                            LatLng homeco = new LatLng(lati, loni);
+
+                            mMap.addMarker(new MarkerOptions().position(homeco).title(getString(R.string.home_marker))).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.house_icon));
 
                             if(!lat.isEmpty() && !lon.isEmpty()) {
 
@@ -124,6 +128,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 Location home = new Location("");
                                 home.setLatitude(lati);
                                 home.setLongitude(loni);
+
+                                Circle circle = mMap.addCircle(new CircleOptions()
+                                        .center(homeco)
+                                        .radius(500000)
+                                        .strokeColor(Color.GREEN));
 
                                 if(home.distanceTo(satellite)<500000){
                                     int duration = Toast.LENGTH_SHORT;
