@@ -35,6 +35,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     int off = 0;
     public GoogleMap mMap;
     UpdateThread th;
+    Timer t;
+    TimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +87,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
 
-        Timer t = new Timer();
+        t = new Timer();
 
-            TimerTask task = new TimerTask(){
+            task = new TimerTask(){
 
                 @Override
                 public void run(){
@@ -163,6 +165,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 return;
             }
         }
+    }
+    @Override
+    public void onDestroy(){
+        Log.d("DESTROY","activity destroyed");
+        task.cancel();
+        t.cancel();
+        t.purge();
+        task = null;
+        t = null;
+        super.onDestroy();
     }
 }
 
