@@ -125,7 +125,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 home.setLongitude(loni);
 
                                 if(home.distanceTo(satellite)<500000){
-                                    int duration = Toast.LENGTH_LONG;
+                                    int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.close_toast), duration);
                                     toast.show();
                                 }
