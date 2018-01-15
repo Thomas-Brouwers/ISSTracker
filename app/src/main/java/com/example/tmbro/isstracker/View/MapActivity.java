@@ -2,6 +2,11 @@ package com.example.tmbro.isstracker.View;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,6 +15,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -35,6 +41,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     int off = 0;
     public GoogleMap mMap;
     UpdateThread th;
+    boolean alreadysent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +115,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 LatLng three = new LatLng(lat.get(2), lon.get(2));
                                 LatLng four = new LatLng(lat.get(3), lon.get(3));
                                 LatLng five = new LatLng(lat.get(4), lon.get(4));
-                                mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(4), lon.get(4))).title(getString(R.string.ISS_marker))).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.space_station));
+                                mMap.addMarker(new MarkerOptions().position(new LatLng(lat.get(4), lon.get(4))).title(getString(R.string.ISS_marker)).anchor(0.5f, 0.5f)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.space_station));
                                 LatLng six = new LatLng(lat.get(5), lon.get(5));
                                 LatLng seven = new LatLng(lat.get(6), lon.get(6));
                                 LatLng eight = new LatLng(lat.get(7), lon.get(7));
@@ -131,10 +138,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                         .radius(1500000)
                                         .strokeColor(Color.GREEN));
 
-                                if(home.distanceTo(satellite)<1500000){
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toasti = Toast.makeText(getApplicationContext(), getString(R.string.close_toast), duration);
-                                    toasti.show();
+                                if(home.distanceTo(satellite)<1500000 && !alreadysent){
+                                    sendNotification();
+                                    alreadysent = true;
+                                }
+                                if((home.distanceTo(satellite)>1500000)) {
+                                    alreadysent = false;
                                 }
                             }
 
@@ -169,6 +178,41 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
         }
     }
+
+    private void sendNotification() {
+        // Intent to start the main Activity
+        Intent notificationIntent = new Intent(getApplicationContext(), MapActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MapActivity.class);
+        stackBuilder.addNextIntent(notificationIntent);
+        PendingIntent notificationPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+
+        // Creating and sending Notification
+        NotificationManager notificatioMng =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificatioMng.notify(
+                0,
+                createNotification(getString(R.string.close_toast), "", notificationPendingIntent));
+
+    }
+
+    // Create notification
+    private Notification createNotification(String msg, String name, PendingIntent notificationPendingIntent) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "POI");
+        notificationBuilder
+                .setSmallIcon(R.drawable.space_station)
+                .setColor(Color.RED)
+                .setContentTitle(msg)
+                .setContentText(name)
+                .setContentIntent(notificationPendingIntent)
+                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
+                .setAutoCancel(true);
+        return notificationBuilder.build();
+    }
+
     @Override
     public void onDestroy(){
         Log.d("DESTROY","activity destroyed");
