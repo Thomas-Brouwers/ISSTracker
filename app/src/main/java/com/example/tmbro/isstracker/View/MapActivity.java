@@ -20,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.tmbro.isstracker.Controller.NotificationController;
 import com.example.tmbro.isstracker.R;
 import com.example.tmbro.isstracker.Model.UpdateThread;
 import com.google.android.gms.maps.GoogleMap;
@@ -139,7 +140,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                         .strokeColor(Color.GREEN));
 
                                 if(home.distanceTo(satellite)<1500000 && !alreadysent){
-                                    sendNotification();
+                                    new NotificationController(getApplicationContext());
                                     alreadysent = true;
                                 }
                                 if((home.distanceTo(satellite)>1500000)) {
@@ -201,7 +202,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     // Create notification
     private Notification createNotification(String msg, String name, PendingIntent notificationPendingIntent) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "POI");
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "ISS");
         notificationBuilder
                 .setSmallIcon(R.drawable.space_station)
                 .setColor(Color.RED)
