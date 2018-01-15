@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     double latitude;
     double longitude;
+    boolean addressFailed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,24 +67,43 @@ public class MainActivity extends AppCompatActivity {
                         == PackageManager.PERMISSION_GRANTED) {
 
                     try {
+
+                        //Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                        List<String> providers = lm.getProviders(true);
                         Location location = null;
-                        if (lm != null) {
-                            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        for (String provider : providers) {
+                            Location l = lm.getLastKnownLocation(provider);
+                            if (l == null) {
+                                continue;
+                            }
+                            if (location == null || l.getAccuracy() < location.getAccuracy()) {
+                                // Found best last known location: %s", l);
+                                location = l;
+                            }
                         }
-                        if(location != null) {
-                            longitude = location.getLongitude();
-                            latitude = location.getLatitude();
-                        }
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
                         geocoder = new Geocoder(context, Locale.getDefault());
-                        addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        int i = 0;
+                        while (addresses == null || addresses.isEmpty()) {
+                            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                            i++;
+                            if(i>50) {
+                                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.noAdress),Toast.LENGTH_SHORT);
+                                toast.show();
+                                addressFailed = true;
+                                break;
+                            }
 
-                        editor.putFloat("lat", (float)latitude);
-                        editor.putFloat("lon", (float)longitude);
-                        editor.putString("place", addresses.get(0).getLocality());
-                        editor.apply();
-
-                        textView.setText(getString(R.string.home_location) + addresses.get(0).getLocality());
-
+                        }
+                        if(!addressFailed) {
+                            editor.putFloat("lat", (float) latitude);
+                            editor.putFloat("lon", (float) longitude);
+                            editor.putString("place", addresses.get(0).getLocality());
+                            editor.apply();
+                            textView.setText(getString(R.string.home_location) + addresses.get(0).getLocality());
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

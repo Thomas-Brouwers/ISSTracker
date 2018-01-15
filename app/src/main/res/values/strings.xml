@@ -8,4 +8,5 @@
     <string name="close_toast">The ISS is visible in the sky.</string>
     <string name="home_marker">Home</string>
     <string name="ISS_marker">International Space Station</string>
+    <string name="noAdress">Couldn\'t find an address to make home</string>
 </resources>

@@ -9,4 +9,5 @@
     <string name="close_toast">Je kan het ISS in de lucht zien.</string>
     <string name="home_marker">Thuis</string>
     <string name="ISS_marker">International Space Station</string>
+    <string name="noAdress">Kon geen adres vinden</string>
 </resources>
