@@ -11,6 +11,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -66,10 +67,19 @@ public class MainActivity extends AppCompatActivity {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
 
+                    Boolean stop = false;
                     try {
+
+                        int off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+                        if(off==0){
+                            Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(onGPS);
+                            stop = true;
+                        }
 
                         //Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+                        if(!stop){
                         List<String> providers = lm.getProviders(true);
                         Location location = null;
                         for (String provider : providers) {
@@ -104,7 +114,13 @@ public class MainActivity extends AppCompatActivity {
                             editor.apply();
                             textView.setText(getString(R.string.home_location) + addresses.get(0).getLocality());
                         }
+                        }
+
+                        stop = true;
+
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Settings.SettingNotFoundException e) {
                         e.printStackTrace();
                     }
                 } else {
